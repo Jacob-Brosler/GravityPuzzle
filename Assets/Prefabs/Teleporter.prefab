@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 33641464086249926}
   - component: {fileID: 135058236074670046}
   - component: {fileID: 23784043913331748}
+  - component: {fileID: 114156208907622296}
+  - component: {fileID: 114671649658638484}
   m_Layer: 0
   m_Name: Teleporter
   m_TagString: Untagged
@@ -83,6 +85,30 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1071372633564928}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114156208907622296
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1071372633564928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3b0fe61c1f611042bb75a100c39a182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrayPosition: {x: 0, y: 0}
+--- !u!114 &114671649658638484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1071372633564928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd15816a50edf9247a5a4b2b0422348b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 0
 --- !u!135 &135058236074670046
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -90,7 +116,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1071372633564928}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5

@@ -17,7 +17,7 @@ public class VisualMapGenerator : MonoBehaviour {
     public GameObject goalPrefab;
     public GameObject wallPrefab;
     public GameObject teleporterPrefab;
-    //rotated for left, up, right and down only walls
+    //rotated for left, right and down only walls. Default is up
     public GameObject oneWayWallPrefab;
     public GameObject spikePrefab;
     public GameObject lockBoxPrefab;
@@ -43,20 +43,29 @@ public class VisualMapGenerator : MonoBehaviour {
             transform.Rotate(rotation);
             moving--;
             if (moving == 0)
-                player.CanMove();
+                FinishRotation();
         }
         else if(moving < 0)
         {
             transform.Rotate(-rotation);
             moving++;
             if (moving == 0)
-                player.CanMove();
+                FinishRotation();
         }
 	}
 
+    public void FinishRotation()
+    {
+        player.CanMove();
+        player.transform.position = new Vector3(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
+        foreach(Vector2Int p in mapList[currentMap].TPLinkList.Values)
+        {
+            visualMap[p.x, p.y].GetComponent<Teleporter>().enabled = true;
+        }
+    }
+
     public void MakeMaps()
     {
-        /**/
         mapList.Add(new Map(new int[20, 20] {   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                                                 { 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0 },
                                                 { 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0 },
@@ -291,22 +300,22 @@ public class VisualMapGenerator : MonoBehaviour {
                 }
                 else if (mapList[currentMap].map[x, y] == 4)
                 {
-                    visualMap[x, y] = Instantiate(oneWayWallPrefab, new Vector3(y - 10, 10 - x), Quaternion.Euler(0, 0, 90), transform);
+                    visualMap[x, y] = Instantiate(oneWayWallPrefab, new Vector3(y - 10 - 0.25f, 10 - x), Quaternion.Euler(0, 0, 90), transform);
                     visualMap[x, y].layer = 8;
                 }
                 else if (mapList[currentMap].map[x, y] == 5)
                 {
-                    visualMap[x, y] = Instantiate(oneWayWallPrefab, new Vector3(y - 10, 10 - x), Quaternion.Euler(0, 0, 0), transform);
+                    visualMap[x, y] = Instantiate(oneWayWallPrefab, new Vector3(y - 10, 10 - x + 0.25f), Quaternion.Euler(0, 0, 0), transform);
                     visualMap[x, y].layer = 9;
                 }
                 else if (mapList[currentMap].map[x, y] == 6)
                 {
-                    visualMap[x, y] = Instantiate(oneWayWallPrefab, new Vector3(y - 10, 10 - x), Quaternion.Euler(0, 0, -90), transform);
+                    visualMap[x, y] = Instantiate(oneWayWallPrefab, new Vector3(y - 10 + 0.25f, 10 - x), Quaternion.Euler(0, 0, -90), transform);
                     visualMap[x, y].layer = 10;
                 }
                 else if (mapList[currentMap].map[x, y] == 7)
                 {
-                    visualMap[x, y] = Instantiate(oneWayWallPrefab, new Vector3(y - 10, 10 - x), Quaternion.Euler(0, 0, 180), transform);
+                    visualMap[x, y] = Instantiate(oneWayWallPrefab, new Vector3(y - 10, 10 - x - 0.25f), Quaternion.Euler(0, 0, 180), transform);
                     visualMap[x, y].layer = 11;
                 }
                 else if (mapList[currentMap].map[x, y] == 8)
@@ -324,15 +333,15 @@ public class VisualMapGenerator : MonoBehaviour {
                 else if (mapList[currentMap].map[x, y] == 11)
                 {
                     player = Instantiate(playerPrefab, new Vector3(y - 10, 10 - x), Quaternion.Euler(0, 0, 0), transform).GetComponent<Player>();
-                    player.gameObject.layer = 11;
                 }
-                if(visualMap[x, y] != null)
-                    visualMap[x, y].name = x + " " + y;
+                if (visualMap[x, y] != null)
+                    visualMap[x, y].GetComponent<BlockInfo>().arrayPosition = new Vector2Int(x, y);
             }
         }
+        falling = false;
     }
 
-    public void CheckSpace(int x, int y)
+    public void CheckTriggerer(int x, int y)
     {
         if (mapList[currentMap].map[x, y] == 1)
         {
@@ -343,11 +352,11 @@ public class VisualMapGenerator : MonoBehaviour {
         }
         else if (mapList[currentMap].map[x, y] == 3)
         {
-            player.transform.position = visualMap[mapList[currentMap].TPLinkList[new Vector2Int(x, y)].x, mapList[currentMap].TPLinkList[new Vector2Int(x, y)].y].transform.position;
-        }
-        else if (mapList[currentMap].map[x, y] == 2 || mapList[currentMap].map[x, y] == 4 || mapList[currentMap].map[x, y] == 5 || mapList[currentMap].map[x, y] == 6 || mapList[currentMap].map[x, y] == 7 || mapList[currentMap].map[x, y] == 9)
-        {
-            falling = false;
+            if (visualMap[mapList[currentMap].TPLinkList[new Vector2Int(x, y)].x, mapList[currentMap].TPLinkList[new Vector2Int(x, y)].y].GetComponent<Teleporter>().enabled)
+            {
+                player.transform.position = visualMap[mapList[currentMap].TPLinkList[new Vector2Int(x, y)].x, mapList[currentMap].TPLinkList[new Vector2Int(x, y)].y].transform.position;
+                visualMap[x, y].GetComponent<Teleporter>().enabled = false;
+            }
         }
         else if (mapList[currentMap].map[x, y] == 8)
         {
@@ -362,7 +371,7 @@ public class VisualMapGenerator : MonoBehaviour {
     //sets up the map to start rotating and changes the gravity identifier
     public void rotate(int r)
     {
-        if (moving == 0 && !falling)
+        if (moving == 0 && !falling && player.MyRigidbody.velocity == Vector3.zero)
         {
             player.Stop();
             moving = r;
