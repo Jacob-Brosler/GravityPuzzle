@@ -19,10 +19,10 @@ TagManager:
   - Right
   - Down
   - Uncollidable
-  - 
-  - 
-  - 
-  - 
+  - pLeft
+  - pUp
+  - pRight
+  - pDown
   - 
   - 
   - 

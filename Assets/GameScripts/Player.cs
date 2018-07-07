@@ -6,6 +6,8 @@ public class Player : MonoBehaviour {
 
     VisualMapGenerator mappyBoi;
     public Rigidbody MyRigidbody;
+    public int playerID;
+    public bool enemy = false;
 
     void Awake()
     {
@@ -16,6 +18,8 @@ public class Player : MonoBehaviour {
     void OnCollisionEnter(Collision collision)
     {
         mappyBoi.falling = false;
+        if (!enemy && collision.transform.GetComponent<Player>() != null && collision.transform.GetComponent<Player>().enemy)
+            mappyBoi.GenerateMap();
     }
 
     void OnTriggerEnter(Collider other)
@@ -23,7 +27,12 @@ public class Player : MonoBehaviour {
         if (other.gameObject.CompareTag("KillPlane"))
             mappyBoi.GenerateMap();
         else
-            mappyBoi.CheckTriggerer(other.transform.GetComponent<BlockInfo>().arrayPosition.x, other.transform.GetComponent<BlockInfo>().arrayPosition.y);
+            mappyBoi.CheckTriggerer(other.transform.GetComponent<BlockInfo>().arrayPosition.x, other.transform.GetComponent<BlockInfo>().arrayPosition.y, playerID, enemy);
+    }
+
+    public void TurnToEnemy()
+    {
+        enemy = true;
     }
 
     public void Stop()

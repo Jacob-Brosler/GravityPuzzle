@@ -10,8 +10,12 @@ public class SwitchBox : MonoBehaviour {
     {
         open = !open;
         if (open)
-            gameObject.layer = 12;
+        {
+            gameObject.SetActive(false);//.layer = 12;
+        }
         else
-            gameObject.layer = 1;
+        {
+            gameObject.SetActive(true);//.layer = 1;
+        }
     }
 }
