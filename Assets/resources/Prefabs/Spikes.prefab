@@ -108,3 +108,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrayPosition: {x: 0, y: 0}
+  blockType: 8

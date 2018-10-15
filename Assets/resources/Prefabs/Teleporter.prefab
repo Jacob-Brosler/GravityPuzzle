@@ -23,7 +23,8 @@ GameObject:
   - component: {fileID: 135058236074670046}
   - component: {fileID: 23784043913331748}
   - component: {fileID: 114156208907622296}
-  - component: {fileID: 114671649658638484}
+  - component: {fileID: 114895396363009340}
+  - component: {fileID: 114854669256153862}
   m_Layer: 0
   m_Name: Teleporter
   m_TagString: Untagged
@@ -97,7 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrayPosition: {x: 0, y: 0}
---- !u!114 &114671649658638484
+  blockType: 3
+--- !u!114 &114854669256153862
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -105,10 +107,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1071372633564928}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd15816a50edf9247a5a4b2b0422348b, type: 3}
+  m_Script: {fileID: 11500000, guid: 10826435c16efc04eb961a58c8010615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enabled: 0
+  toggleState: 1
+--- !u!114 &114895396363009340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1071372633564928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb6cdd1ed404ed4aa54a59bb36fcc24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  linkedBlock: {fileID: 0}
 --- !u!135 &135058236074670046
 SphereCollider:
   m_ObjectHideFlags: 1
