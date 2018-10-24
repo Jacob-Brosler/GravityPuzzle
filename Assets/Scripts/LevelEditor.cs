@@ -59,15 +59,23 @@ public class LevelEditor : MonoBehaviour
 
     public void LoadLevel(int l)
     {
+        string loadedLevel = PlayerPrefs.GetString("CustomLevel" + l, "");
         for (int x = 0; x < 20; x++)
         {
             for (int y = 0; y < 20; y++)
             {
                 //grabs the value
-                customMap.map[x, y] = PlayerPrefs.GetInt("CustomLevel" + l + "" + x + "" + y, 0);
+                if (loadedLevel != "")
+                {
+                    customMap.map[x, y] = int.Parse(loadedLevel.Substring(0, loadedLevel.IndexOf("|")));
+                    loadedLevel = loadedLevel.Substring(loadedLevel.IndexOf("|") + 1);
+                }
+                else
+                    customMap.map[x, y] = 0;
                 ChangeVisual(x, y);
             }
         }
+
         //checks if map is playable
         if (CheckFor(1) && CheckFor(11))
         {
@@ -111,13 +119,15 @@ public class LevelEditor : MonoBehaviour
 
     public void SaveLevel(int l)
     {
+        string toBeSaved = "";
         for (int x = 0; x < 20; x++)
         {
             for (int y = 0; y < 20; y++)
             {
-                PlayerPrefs.SetInt("CustomLevel" + l + "" + x + "" + y, customMap.map[x, y]);
+                toBeSaved += customMap.map[x, y] + "|";
             }
         }
+        PlayerPrefs.SetString("CustomLevel" + l, toBeSaved);
 
         //adds all the saved TP values
         int p = 1;
